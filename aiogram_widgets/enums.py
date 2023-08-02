@@ -1,6 +1,6 @@
-from enum import Enum
+from enum import IntEnum
 
 
-class InlineKeyboardLimits(Enum):
+class InlineKeyboardLimits(IntEnum):
     MAX_ROW_LENGTH = 8
     MAX_PAGE_ELEMENTS = 100
