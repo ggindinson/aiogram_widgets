@@ -22,7 +22,7 @@ class KeyboardPaginator(BasePaginator):
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
     def __init__(
         self,
-        data: Annotated[List[Button_type], Field(min_length=1)],
+        data: Annotated[List[Button_type], Field(min_items=1)],
         router: Dispatcher | Router,
         additional_buttons: Additional_buttons_type | None = None,
         pagination_key: Pagination_key = "keyboard_paginated",
