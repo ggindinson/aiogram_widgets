@@ -1,10 +1,20 @@
 [tool.poetry]
 name = "aiogram-widgets"
-version = "0.1.0"
+version = "1.0.0"
 description = ""
-authors = ["ggindinson <https://github.com/ggindinson>"]
+authors = ["ggindinson"]
 readme = "README.md"
+requires-python = ">=3.9"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
 packages = [{include = "aiogram_widgets"}]
+
+[project.urls]
+"Homepage" = "https://github.com/ggindinson/aiogram-widgets"
+"PyPI" = "https://pypi.python.org/pypi/aiogram_widgets/"
 
 [tool.poetry.dependencies]
 python = "^3.9"

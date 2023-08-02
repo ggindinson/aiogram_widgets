@@ -6,7 +6,7 @@ from aiogram import Dispatcher, Router
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 
-from aiogram_widgets.types.types import Additional_buttons_type
+from aiogram_widgets.types import Additional_buttons_type
 
 
 class BasePaginator(ABC):
