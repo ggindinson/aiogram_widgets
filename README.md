@@ -152,8 +152,6 @@ async def text_pagination_with_custom_join(message: Message):
 ## 🔗 Links
 [![](https://img.shields.io/github/stars/ggindinson?label=GitHub%20Repo&style=social)](https://github.com/ggindinson/aiogram_widgets)
 
-[![Latest Version](https://pypip.in/version/aiogram_widgets/badge.svg)](https://pypi.python.org/pypi/aiogram_widgets/)
-
 ## Feedback
 
 I would be very pleased for a star ⭐️
