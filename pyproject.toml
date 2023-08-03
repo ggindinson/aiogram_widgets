@@ -1,9 +1,12 @@
-[tool.poetry]
+[project]
 name = "aiogram-widgets"
 version = "1.1.0"
-description = ""
+description = "Create most popular widgets for aiogram 3 in few code lines "
 authors = ["ggindinson"]
+requires-python = ">=3.9"
 readme = "README.md"
+license = {file = "LICENSE"}
+keywords = ["aiogram", "telegram api", "pagination", "calendar", "checkbox", "multiselect", "templates"]
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
@@ -11,9 +14,12 @@ classifiers = [
 ]
 packages = [{include = "aiogram_widgets"}]
 
+
 [project.urls]
-"Homepage" = "https://github.com/ggindinson/aiogram-widgets"
-"PyPI" = "https://pypi.python.org/pypi/aiogram_widgets/"
+Repository = "https://github.com/ggindinson/aiogram-widgets"
+PyPI = "https://pypi.python.org/pypi/aiogram_widgets/"
+
+dependencies = [aiogram>3.0.0b5]
 
 [tool.poetry.dependencies]
 python = "^3.9"
