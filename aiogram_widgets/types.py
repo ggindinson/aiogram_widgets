@@ -1,12 +1,26 @@
-from typing import Annotated, Any, Dict, List
+from typing import Annotated, Any, Dict, List, TypeAlias
 
+import aiogram
 from aiogram.types import InlineKeyboardButton
-from pydantic import Field
+
+if aiogram.__version__ >= "3.0.0b8":
+    from pydantic.v1 import Field
+else:
+    from pydantic import Field
 
 from aiogram_widgets.enums import InlineKeyboardLimits
 
-Additional_buttons_type = List[List[InlineKeyboardButton] | List[Dict[str, Any]]]
-Per_row_type = Annotated[int, Field(ge=1, le=InlineKeyboardLimits.MAX_ROW_LENGTH)]
-Per_page_type = Annotated[int, Field(ge=1, le=InlineKeyboardLimits.MAX_PAGE_ELEMENTS)]
-Pagination_key = Annotated[str, Field(min_length=1)]
-Button_type = InlineKeyboardButton | Dict[str, Any]
+AdditionalButtonsType: TypeAlias = List[
+    List[InlineKeyboardButton] | List[Dict[str, Any]]
+]
+PerRowType: TypeAlias = Annotated[
+    int, Field(ge=1, le=InlineKeyboardLimits.MAX_ROW_LENGTH)
+]
+PerPageType: TypeAlias = Annotated[
+    int, Field(ge=1, le=InlineKeyboardLimits.MAX_PAGE_ELEMENTS)
+]
+PaginationKeyType: TypeAlias = Annotated[str, Field(min_length=1)]
+ButtonType: TypeAlias = InlineKeyboardButton | Dict[str, Any]
+PaginationButtonsType: TypeAlias = Annotated[
+    List[Annotated[str, Field(min_length=1)] | None], Field(min_items=4, max_items=4)
+]

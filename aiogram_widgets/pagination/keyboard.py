@@ -1,33 +1,38 @@
 from typing import Annotated, List
 
-from aiogram import Dispatcher, F, Router
-from aiogram.filters.state import StateFilter
-from aiogram.types import CallbackQuery, InlineKeyboardButton
+import aiogram
+from aiogram import Router
+from aiogram.types import CallbackQuery
 from aiogram.utils.keyboard import InlineKeyboardBuilder
-from pydantic import Field, validate_arguments
+
+if aiogram.__version__ >= "3.0.0b8":
+    from pydantic.v1 import Field
+else:
+    from pydantic import Field
 
 from aiogram_widgets.pagination._base import BasePaginator
 from aiogram_widgets.types import (
-    Additional_buttons_type,
-    Button_type,
-    Pagination_key,
-    Per_page_type,
-    Per_row_type,
+    AdditionalButtonsType,
+    ButtonType,
+    PaginationButtonsType,
+    PaginationKeyType,
+    PerPageType,
+    PerRowType,
 )
 
 
 class KeyboardPaginator(BasePaginator):
     """Allows to create a new markup with keyboard pagination"""
 
-    @validate_arguments(config=dict(arbitrary_types_allowed=True))
     def __init__(
         self,
-        data: Annotated[List[Button_type], Field(min_items=1)],
-        router: Dispatcher | Router,
-        additional_buttons: Additional_buttons_type | None = None,
-        pagination_key: Pagination_key = "keyboard_paginated",
-        per_row: Per_row_type = 2,
-        per_page: Per_page_type = 10,
+        data: Annotated[List[ButtonType], Field(min_items=1)],
+        router: Router,
+        additional_buttons: AdditionalButtonsType | None = None,
+        pagination_key: PaginationKeyType = "keyboard_paginated",
+        pagination_buttons: PaginationButtonsType = ["⏪", "⬅️", "➡️", "⏩"],
+        per_row: PerRowType = 2,
+        per_page: PerPageType = 10,
     ):
         """
         :param data - buttons data. (`required`)
@@ -36,7 +41,9 @@ class KeyboardPaginator(BasePaginator):
                 "text": "Button name",
                 "callback_data": "callback_data",
             },
-            InlineKeyboardButton(text="Button name 2", callback_data="callback_data_2"),
+            InlineKeyboardButton(
+                text="Button name 2", callback_data="callback_data_2"
+            ),
             {
                 "text": "Button name 999",
                 "callback_data": "callback_data_999",
@@ -46,11 +53,19 @@ class KeyboardPaginator(BasePaginator):
         :param router: pagination automatization. (`required`)
         :param additional_buttons: provide additional buttons, that will be inserted after pagination panel. `(default=None)`
         :param pagination_key: callback data, which will be attached to the callback of each pagination button `(default="text_paginated")`
+        :param pagination_buttons: list of `four` buttons, where each is a string or None (if you don't want to add this button) `(default=["⏪", "⬅️", "➡️", "⏩"])`
         :param per_row: amount of items per row `(default=2)`
         :param per_page: amount of items per page `(default=10)`
         """
         self.per_row = per_row
-        super().__init__(data, per_page, pagination_key, router, additional_buttons)
+        super().__init__(
+            data=data,
+            router=router,
+            additional_buttons=additional_buttons,
+            pagination_key=pagination_key,
+            pagination_buttons=pagination_buttons,
+            per_page=per_page,
+        )
 
     def _build(self):
         self.builder = InlineKeyboardBuilder()
@@ -63,24 +78,8 @@ class KeyboardPaginator(BasePaginator):
 
         self._build_pagination_buttons(self.builder)
 
-    def _register_handler(self):
-        """"""
+    async def _callback_handler(self, call: CallbackQuery):
+        self.current_page_index = int(call.data.split("|")[-1])
+        self._build()
 
-        async def __callback_handler(call: CallbackQuery):
-            self.current_page_index = int(call.data.split("|")[-1])
-            self._build()
-
-            await call.message.edit_reply_markup(reply_markup=self.as_markup())
-
-        self.router.callback_query.register(
-            __callback_handler,
-            F.data.startswith(self.pagination_key),
-            StateFilter("*"),
-        )
-
-    def _format_button(self, button: Button_type) -> InlineKeyboardButton:
-        return (
-            InlineKeyboardButton(**button)
-            if not isinstance(button, InlineKeyboardButton)
-            else button
-        )
+        await call.message.edit_reply_markup(reply_markup=self.as_markup())
