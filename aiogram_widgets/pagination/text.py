@@ -1,4 +1,5 @@
-from typing import Annotated, List
+from typing import Annotated, List, Optional
+from uuid import uuid4
 
 import aiogram
 from aiogram import Router
@@ -26,9 +27,9 @@ class TextPaginator(BasePaginator):
         self,
         data: Annotated[List[str], Field(min_items=1)],
         router: Router,
-        data_joiner: str = "\n",
-        additional_buttons: AdditionalButtonsType | None = None,
-        pagination_key: PaginationKeyType = "text_paginated",
+        join_symbol: str = "\n",
+        additional_buttons: Optional[AdditionalButtonsType] = None,
+        pagination_key: PaginationKeyType = str(uuid4()),
         pagination_buttons: PaginationButtonsType = ["⏪", "⬅️", "➡️", "⏩"],
         per_page: PerPageType = 10,
     ):
@@ -45,9 +46,9 @@ class TextPaginator(BasePaginator):
         ]
 
         :param router: pagination automatization. (`required`)
-        :param data_joiner: string, which will `join` current text chunk to one text `(default=new string)`
+        :param join_symbol: string, which will `join` current text chunk to one text `(default=new string)`
         :param additional_buttons: provide additional buttons, that will be inserted after pagination panel. `(default=None)`
-        :param pagination_key: callback data, which will be attached to the callback of each pagination button `(default="text_paginated")`
+        :param pagination_key: custom callback data, which will be attached to the callback of each pagination button
         :param pagination_buttons: list of `four` buttons, where each is a string or None (if you don't want to add this button) `(default=["⏪", "⬅️", "➡️", "⏩"])`
         :param per_page: amount of items per page `(default=10)`
         """
@@ -59,7 +60,7 @@ class TextPaginator(BasePaginator):
             pagination_buttons=pagination_buttons,
             per_page=per_page,
         )
-        self.data_joiner = data_joiner
+        self.join_symbol = join_symbol
 
     def _build(self):
         self.builder = InlineKeyboardBuilder()
@@ -89,4 +90,4 @@ class TextPaginator(BasePaginator):
         return self._format_data_chunk(), self.as_markup()
 
     def _format_data_chunk(self) -> str:
-        return self.data_joiner.join(self._current_data_chunk)
+        return self.join_symbol.join(self._current_data_chunk)

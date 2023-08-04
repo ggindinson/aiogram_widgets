@@ -1,4 +1,4 @@
-from typing import Annotated, Any, Dict, List, TypeAlias
+from typing import Annotated, Any, Dict, List, Optional, TypeAlias
 
 import aiogram
 from aiogram.types import InlineKeyboardButton
@@ -22,5 +22,5 @@ PerPageType: TypeAlias = Annotated[
 PaginationKeyType: TypeAlias = Annotated[str, Field(min_length=1)]
 ButtonType: TypeAlias = InlineKeyboardButton | Dict[str, Any]
 PaginationButtonsType: TypeAlias = Annotated[
-    List[Annotated[str, Field(min_length=1)] | None], Field(min_items=4, max_items=4)
+    List[Optional[Annotated[str, Field(min_length=1)]]], Field(min_items=4, max_items=4)
 ]

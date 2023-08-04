@@ -13,10 +13,10 @@ from aiogram.types import (
 
 from aiogram_widgets.pagination import KeyboardPaginator, TextPaginator
 
-BOT_TOKEN = "6527027065:AAFsfyKIBNf5g18FGLTBOxpyyU3Af44A-6Y"
+BOT_TOKEN = ""
 dp = Dispatcher(storage=ms())
 bot = Bot(BOT_TOKEN, parse_mode="HTML")
-test_router = Router(name="test_router router")
+test_router = Router(name="test_router")
 
 commands: Dict[str, str] = {
     "keyboard_pagination": "Simple kb pagination",
@@ -38,7 +38,6 @@ async def keyboard_pagination(message: Message):
     paginator = KeyboardPaginator(
         data=buttons,
         router=test_router,
-        pagination_key="test_kb_paginator",
         per_page=20,
         per_row=2,
     )
@@ -64,7 +63,6 @@ async def keyboard_pagination_with_additional_buttons(message: Message):
     paginator = KeyboardPaginator(
         data=buttons,
         router=test_router,
-        pagination_key="test_kb_additional_paginator",
         additional_buttons=additional_buttons,
         per_page=20,
         per_row=2,
@@ -88,7 +86,6 @@ async def kb_custom_pagination(message: Message):
     paginator = KeyboardPaginator(
         data=buttons,
         router=test_router,
-        pagination_key="test_kb_custom_paginator",
         pagination_buttons=pagination_buttons,
     )
 
@@ -109,7 +106,6 @@ async def text_pagination(message: Message):
     paginator = TextPaginator(
         data=text_data,
         router=test_router,
-        pagination_key="test_text_paginator",
     )
 
     current_text_chunk, reply_markup = paginator.current_message_data
@@ -130,8 +126,7 @@ async def text_custom_join(message: Message):
     paginator = TextPaginator(
         data=text_data,
         router=test_router,
-        pagination_key="test_text_join_paginator",
-        data_joiner="\n\n",
+        join_symbol="\n\n",
     )
     current_text_chunk, reply_markup = paginator.current_message_data
 

@@ -1,4 +1,5 @@
-from typing import Annotated, List
+from typing import Annotated, List, Optional
+from uuid import uuid4
 
 import aiogram
 from aiogram import Router
@@ -28,8 +29,8 @@ class KeyboardPaginator(BasePaginator):
         self,
         data: Annotated[List[ButtonType], Field(min_items=1)],
         router: Router,
-        additional_buttons: AdditionalButtonsType | None = None,
-        pagination_key: PaginationKeyType = "keyboard_paginated",
+        additional_buttons: Optional[AdditionalButtonsType] = None,
+        pagination_key: PaginationKeyType = str(uuid4()),
         pagination_buttons: PaginationButtonsType = ["⏪", "⬅️", "➡️", "⏩"],
         per_row: PerRowType = 2,
         per_page: PerPageType = 10,
@@ -52,7 +53,7 @@ class KeyboardPaginator(BasePaginator):
 
         :param router: pagination automatization. (`required`)
         :param additional_buttons: provide additional buttons, that will be inserted after pagination panel. `(default=None)`
-        :param pagination_key: callback data, which will be attached to the callback of each pagination button `(default="text_paginated")`
+        :param pagination_key: custom callback data, which will be attached to the callback of each pagination button
         :param pagination_buttons: list of `four` buttons, where each is a string or None (if you don't want to add this button) `(default=["⏪", "⬅️", "➡️", "⏩"])`
         :param per_row: amount of items per row `(default=2)`
         :param per_page: amount of items per page `(default=10)`

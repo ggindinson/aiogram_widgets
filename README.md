@@ -31,7 +31,12 @@ Create most popular widgets for aiogram 3x in a few code lines
 
 # Changelog
 
-`Version 1.2.0:`
+`Version 1.2.3:`
+- Fixed typings at Python 3.9
+- `pagination_key` now is not required
+- Better types naming
+
+`Version 1.2.2:`
 - Custom pagination keyboard support
 - Aiogram 3.0.0b8 support
 - README with more examples
@@ -54,8 +59,8 @@ poetry add aiogram_widgets
 ```
 
 
-# ![](https://raw.githubusercontent.com/ggindinson/aiogram_widgets/main/demo.gif) 🤖 [Bot example](https://t.me/aiogram_widgets_demo_bot) | [Bot source code](https://github.com/ggindinson/aiogram_widgets/blob/main/example.py) ⚙️
-
+# 🤖 [Bot example](https://t.me/aiogram_widgets_demo_bot) | [Bot source code](https://github.com/ggindinson/aiogram_widgets/blob/main/example.py) ⚙️
+![](https://raw.githubusercontent.com/ggindinson/aiogram_widgets/main/demo.gif)
 
 
 
@@ -77,7 +82,6 @@ async def keyboard_pagination(message: Message):
     ]
     paginator = KeyboardPaginator(
         data=buttons,
-        pagination_key="test_kb_paginator",
         per_page=20,
         per_row=2
     )
@@ -104,7 +108,6 @@ async def kb_additional_buttons(message: Message):
     
     paginator = KeyboardPaginator(
         data=buttons,
-        pagination_key="test_kb_paginator",
         additional_buttons=additional_buttons,    
         per_page=20, 
         per_row=2
@@ -127,7 +130,6 @@ async def kb_custom_pagination(message: Message):
 
     paginator = TextPaginator(
         data=text_data,
-        pagination_key="test_text_paginator",
         pagination_buttons=pagination_buttons,
     )
 
@@ -154,7 +156,6 @@ async def text_pagination(message: Message):
     
     paginator = TextPaginator(
         data=text_data,
-        pagination_key="test_text_paginator",
     )
 
     current_text_chunk, reply_markup = paginator.current_message_data
@@ -176,8 +177,7 @@ async def text_custom_join(message: Message):
 
     paginator = TextPaginator(
         data=text_data,
-        pagination_key="test_text_paginator",
-        data_joiner="\n\n",
+        join_symbol="\n\n",
     )
     current_text_chunk, reply_markup = paginator.current_message_data
 

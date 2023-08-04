@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 from math import ceil
 from typing import Any, Dict, List
+from uuid import uuid4
 
 import aiogram
 from aiogram import F, Router
@@ -24,7 +25,7 @@ class BasePaginator(ABC):
         per_page: int,
         router: Router,
         pagination_key: str,
-        pagination_buttons: PaginationButtonsType = ["⏪", "⬅️", "➡️", "⏩"],
+        pagination_buttons: PaginationButtonsType,
         additional_buttons: AdditionalButtonsType | None = None,
     ):
         """Base paginator class, which implements basic methods"""
