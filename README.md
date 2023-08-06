@@ -31,6 +31,9 @@ Create most popular widgets for aiogram 3x in a few code lines
 
 # Changelog
 
+`Version 1.2.4:`
+- Fixed aiogram dependency bug
+
 `Version 1.2.3:`
 - Fixed typings at Python 3.9
 - `pagination_key` now is not required
