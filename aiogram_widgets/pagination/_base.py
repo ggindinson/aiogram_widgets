@@ -5,7 +5,6 @@ from uuid import uuid4
 
 import aiogram
 from aiogram import F, Router
-from aiogram.filters.state import StateFilter
 from aiogram.types import CallbackQuery, InlineKeyboardButton, InlineKeyboardMarkup
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 
@@ -14,7 +13,12 @@ if aiogram.__version__ >= "3.0.0b8":
 else:
     from pydantic import validate_arguments
 
-from aiogram_widgets.types import AdditionalButtonsType, PaginationButtonsType
+from aiogram_widgets.types import (
+    AdditionalButtonsType,
+    PaginationButtonsType,
+    PerPageIntTupleType,
+    PerPageIntType,
+)
 
 
 class BasePaginator(ABC):
@@ -22,16 +26,16 @@ class BasePaginator(ABC):
     def __init__(
         self,
         data: List[Any],
-        per_page: int,
+        per_page: PerPageIntType | PerPageIntTupleType,
         router: Router,
         pagination_key: str,
         pagination_buttons: PaginationButtonsType,
-        additional_buttons: AdditionalButtonsType | None = None,
+        additional_buttons: AdditionalButtonsType = list(),
     ):
         """Base paginator class, which implements basic methods"""
         self.data = data
         self.builder = InlineKeyboardBuilder()
-        self.pagination_key = pagination_key
+        self.pagination_key = f"{uuid4().hex}_{pagination_key}"
         self.router = router
         self.additional_buttons = additional_buttons
 
@@ -68,7 +72,6 @@ class BasePaginator(ABC):
         self.router.callback_query.register(
             self._callback_handler,
             F.data.startswith(self.pagination_key),
-            StateFilter("*"),
         )
 
     def _build_pagination_buttons(self, builder: InlineKeyboardBuilder):
@@ -103,9 +106,10 @@ class BasePaginator(ABC):
                     pagination_buttons=pagination_buttons,
                 )
             builder.row(*pagination_buttons)
+
         if self.additional_buttons:
             for button_row in self.additional_buttons:
-                builder.row(*[self._format_button(button) for button in button_row])
+                self._insert_additional_buttons(button_row)
 
     def _format_button(
         self, button: InlineKeyboardButton | Dict[str, Any]
@@ -114,6 +118,9 @@ class BasePaginator(ABC):
         if isinstance(button, InlineKeyboardButton):
             return button
         return InlineKeyboardButton(**button)
+
+    def _insert_additional_buttons(self, button_row: AdditionalButtonsType) -> None:
+        self.builder.row(*[self._format_button(button) for button in button_row])
 
     def _add_pagination_button_if_exists(
         self,

@@ -1,10 +1,11 @@
-from typing import Annotated, List, Optional
-from uuid import uuid4
+from typing import Annotated, List
 
 import aiogram
 from aiogram import Router
 from aiogram.types import CallbackQuery
 from aiogram.utils.keyboard import InlineKeyboardBuilder
+
+from aiogram_widgets.enums import InlineKeyboardLimitsEnum
 
 if aiogram.__version__ >= "3.0.0b8":
     from pydantic.v1 import Field
@@ -17,7 +18,8 @@ from aiogram_widgets.types import (
     ButtonType,
     PaginationButtonsType,
     PaginationKeyType,
-    PerPageType,
+    PerPageIntTupleType,
+    PerPageIntType,
     PerRowType,
 )
 
@@ -29,11 +31,12 @@ class KeyboardPaginator(BasePaginator):
         self,
         data: Annotated[List[ButtonType], Field(min_items=1)],
         router: Router,
-        additional_buttons: Optional[AdditionalButtonsType] = None,
-        pagination_key: PaginationKeyType = str(uuid4()),
+        pagination_key: PaginationKeyType,
+        additional_buttons: AdditionalButtonsType = list(),
         pagination_buttons: PaginationButtonsType = ["⏪", "⬅️", "➡️", "⏩"],
-        per_row: PerRowType = 2,
-        per_page: PerPageType = 10,
+        per_page: PerRowType = 2,
+        per_row: PerPageIntTupleType
+        | PerPageIntType = (InlineKeyboardLimitsEnum.MAX_ROW_LENGTH,),
     ):
         """
         :param data - buttons data. (`required`)
@@ -55,10 +58,14 @@ class KeyboardPaginator(BasePaginator):
         :param additional_buttons: provide additional buttons, that will be inserted after pagination panel. `(default=None)`
         :param pagination_key: custom callback data, which will be attached to the callback of each pagination button
         :param pagination_buttons: list of `four` buttons, where each is a string or None (if you don't want to add this button) `(default=["⏪", "⬅️", "➡️", "⏩"])`
-        :param per_row: amount of items per row `(default=2)`
+        :param per_row: amount of items per row `(default=8)`
         :param per_page: amount of items per page `(default=10)`
         """
+        if isinstance(per_row, int):
+            per_row = (per_row,)
+
         self.per_row = per_row
+
         super().__init__(
             data=data,
             router=router,
@@ -75,7 +82,7 @@ class KeyboardPaginator(BasePaginator):
             button = self._format_button(button)
             self.builder.add(button)
 
-        self.builder.adjust(self.per_row)
+        self.builder.adjust(*self.per_row)
 
         self._build_pagination_buttons(self.builder)
 

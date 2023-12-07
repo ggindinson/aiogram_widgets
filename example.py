@@ -13,7 +13,7 @@ from aiogram.types import (
 
 from aiogram_widgets.pagination import KeyboardPaginator, TextPaginator
 
-BOT_TOKEN = ""
+BOT_TOKEN = "5728066977:AAFBB99HeUgc7B291PPTvkJs5F1NUYLYN1s"
 dp = Dispatcher(storage=ms())
 bot = Bot(BOT_TOKEN, parse_mode="HTML")
 test_router = Router(name="test_router")
@@ -32,14 +32,14 @@ commands: Dict[str, str] = {
 async def keyboard_pagination(message: Message):
     buttons: List[InlineKeyboardButton] = [
         InlineKeyboardButton(text=f"Button {i}", callback_data=f"button_{i}")
-        for i in range(1, 1001)
+        for i in range(1, 1002)
     ]
 
     paginator = KeyboardPaginator(
         data=buttons,
         router=test_router,
-        per_page=20,
-        per_row=2,
+        per_page=7,
+        per_row=(1, 2),
     )
 
     await message.answer(text="Keyboard pagination", reply_markup=paginator.as_markup())
@@ -145,7 +145,7 @@ async def main():
         commands=formatted_commands,
         scope=BotCommandScopeAllPrivateChats(type="all_private_chats"),
     )
-    dp.include_routers(test_router)
+    dp.include_router(test_router)
     await dp.start_polling(bot, allowed_updates=["message", "callback_query"])
 
 

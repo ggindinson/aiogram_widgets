@@ -1,5 +1,4 @@
-from typing import Annotated, List, Optional
-from uuid import uuid4
+from typing import Annotated, List
 
 import aiogram
 from aiogram import Router
@@ -16,7 +15,7 @@ from aiogram_widgets.types import (
     AdditionalButtonsType,
     PaginationButtonsType,
     PaginationKeyType,
-    PerPageType,
+    PerPageIntType,
 )
 
 
@@ -27,11 +26,11 @@ class TextPaginator(BasePaginator):
         self,
         data: Annotated[List[str], Field(min_items=1)],
         router: Router,
+        pagination_key: PaginationKeyType,
         join_symbol: str = "\n",
-        additional_buttons: Optional[AdditionalButtonsType] = None,
-        pagination_key: PaginationKeyType = str(uuid4()),
+        additional_buttons: AdditionalButtonsType = list(),
         pagination_buttons: PaginationButtonsType = ["⏪", "⬅️", "➡️", "⏩"],
-        per_page: PerPageType = 10,
+        per_page: PerPageIntType = 10,
     ):
         """
         :param data: list of text chunks (`required`)
