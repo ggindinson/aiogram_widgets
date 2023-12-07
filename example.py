@@ -13,7 +13,7 @@ from aiogram.types import (
 
 from aiogram_widgets.pagination import KeyboardPaginator, TextPaginator
 
-BOT_TOKEN = "5728066977:AAFBB99HeUgc7B291PPTvkJs5F1NUYLYN1s"
+BOT_TOKEN = ""
 dp = Dispatcher(storage=ms())
 bot = Bot(BOT_TOKEN, parse_mode="HTML")
 test_router = Router(name="test_router")
