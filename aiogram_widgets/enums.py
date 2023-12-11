@@ -1,11 +1,15 @@
-from enum import IntEnum, StrEnum
+import sys
 
+if sys.version_info >= (3, 11):
+    from enum import IntEnum
 
-class InlineKeyboardLimitsEnum(IntEnum):
-    MAX_ROW_LENGTH = 8
-    MAX_PAGE_ELEMENTS = 100
+    class InlineKeyboardLimitsEnum(IntEnum):
+        MAX_ROW_LENGTH = 8
+        MAX_PAGE_ELEMENTS = 100
 
+else:
+    from enum import Enum
 
-class AdditionalButtonPlacesEnum(StrEnum):
-    TOP = "top"
-    BOTTOM = "bottom"
+    class InlineKeyboardLimitsEnum(Enum):
+        MAX_ROW_LENGTH = 8
+        MAX_PAGE_ELEMENTS = 100

@@ -31,6 +31,10 @@ Create most popular widgets for aiogram 3x in a few code lines
 
 # Changelog
 
+`Version 1.2.6:`
+- Fixed a bug that caused uncompability in python version 3.10 and lower
+
+
 `Version 1.2.5:`
 - Pagination key is automatically unique now
 - Added the ability to adjust buttons passing tuple of sizes (works the similar way as in InlineKeyboardBuilder.adjust) in keyboard pagination
