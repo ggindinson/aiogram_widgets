@@ -2,7 +2,8 @@ import asyncio
 import logging
 from typing import Dict, List
 
-from aiogram import Bot, Dispatcher, F, Router
+from aiogram import Bot, Dispatcher, Router
+from aiogram.filters.command import Command
 from aiogram.fsm.storage.memory import MemoryStorage as ms
 from aiogram.types import (
     BotCommand,
@@ -13,7 +14,7 @@ from aiogram.types import (
 
 from aiogram_widgets.pagination import KeyboardPaginator, TextPaginator
 
-BOT_TOKEN = ""
+BOT_TOKEN = "5728066977:AAFBB99HeUgc7B291PPTvkJs5F1NUYLYN1s"
 dp = Dispatcher(storage=ms())
 bot = Bot(BOT_TOKEN, parse_mode="HTML")
 test_router = Router(name="test_router")
@@ -28,7 +29,7 @@ commands: Dict[str, str] = {
 
 
 # Simple keyboard pagination
-@test_router.message(F.text == "/keyboard_pagination")
+@test_router.message(Command("keyboard_pagination"))
 async def keyboard_pagination(message: Message):
     buttons: List[InlineKeyboardButton] = [
         InlineKeyboardButton(text=f"Button {i}", callback_data=f"button_{i}")
@@ -48,7 +49,7 @@ async def keyboard_pagination(message: Message):
 # Keyboard pagination with additional buttons
 
 
-@test_router.message(F.text == "/kb_additional_buttons")
+@test_router.message(Command("kb_additional_buttons"))
 async def keyboard_pagination_with_additional_buttons(message: Message):
     buttons = [
         InlineKeyboardButton(text=f"Button {i}", callback_data=f"button_{i}")
@@ -75,7 +76,7 @@ async def keyboard_pagination_with_additional_buttons(message: Message):
 
 
 # Keyboard pagination with custom pagination buttons (Same with text pagination)
-@test_router.message(F.text == "/kb_custom_pagination")
+@test_router.message(Command("kb_custom_pagination"))
 async def kb_custom_pagination(message: Message):
     buttons = [
         InlineKeyboardButton(text=f"Button {i}", callback_data=f"button_{i}")
@@ -99,7 +100,7 @@ async def kb_custom_pagination(message: Message):
 from aiogram_widgets.pagination import TextPaginator
 
 
-@test_router.message(F.text == "/text_pagination")
+@test_router.message(Command("text_pagination"))
 async def text_pagination(message: Message):
     text_data = [f"I am string number {i}" for i in range(1, 1001)]
 
@@ -119,7 +120,7 @@ async def text_pagination(message: Message):
 ### Text pagination with custom join
 
 
-@test_router.message(F.text == "/text_join")
+@test_router.message(Command("text_join"))
 async def text_custom_join(message: Message):
     text_data = [f"I am string number {i}" for i in range(1, 1001)]
 
