@@ -17,7 +17,6 @@ from aiogram_widgets.types import (
     AdditionalButtonsType,
     ButtonType,
     PaginationButtonsType,
-    PaginationKeyType,
     PerPageIntTupleType,
     PerPageIntType,
     PerRowType,
@@ -31,7 +30,6 @@ class KeyboardPaginator(BasePaginator):
         self,
         data: Annotated[List[ButtonType], Field(min_items=1)],
         router: Router,
-        pagination_key: PaginationKeyType,
         additional_buttons: AdditionalButtonsType = list(),
         pagination_buttons: PaginationButtonsType = ["⏪", "⬅️", "➡️", "⏩"],
         per_page: PerRowType = 2,
@@ -70,7 +68,6 @@ class KeyboardPaginator(BasePaginator):
             data=data,
             router=router,
             additional_buttons=additional_buttons,
-            pagination_key=pagination_key,
             pagination_buttons=pagination_buttons,
             per_page=per_page,
         )

@@ -14,7 +14,6 @@ from aiogram_widgets.pagination._base import BasePaginator
 from aiogram_widgets.types import (
     AdditionalButtonsType,
     PaginationButtonsType,
-    PaginationKeyType,
     PerPageIntType,
 )
 
@@ -26,7 +25,6 @@ class TextPaginator(BasePaginator):
         self,
         data: Annotated[List[str], Field(min_items=1)],
         router: Router,
-        pagination_key: PaginationKeyType,
         join_symbol: str = "\n",
         additional_buttons: AdditionalButtonsType = list(),
         pagination_buttons: PaginationButtonsType = ["⏪", "⬅️", "➡️", "⏩"],
@@ -55,7 +53,6 @@ class TextPaginator(BasePaginator):
             data=data,
             router=router,
             additional_buttons=additional_buttons,
-            pagination_key=pagination_key,
             pagination_buttons=pagination_buttons,
             per_page=per_page,
         )

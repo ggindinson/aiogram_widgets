@@ -28,14 +28,13 @@ class BasePaginator(ABC):
         data: List[Any],
         per_page: PerPageIntType | PerPageIntTupleType,
         router: Router,
-        pagination_key: str,
         pagination_buttons: PaginationButtonsType,
         additional_buttons: AdditionalButtonsType = list(),
     ):
         """Base paginator class, which implements basic methods"""
         self.data = data
         self.builder = InlineKeyboardBuilder()
-        self.pagination_key = f"{uuid4().hex}_{pagination_key}"
+        self.pagination_key = uuid4().hex
         self.router = router
         self.additional_buttons = additional_buttons
 

@@ -23,7 +23,6 @@ PerPageIntType: TypeAlias = Annotated[
 PerPageIntTupleType: TypeAlias = Annotated[
     Tuple[int, int], Field(min_items=1, max_items=2)
 ]
-PaginationKeyType: TypeAlias = Annotated[str, Field(min_length=1)]
 ButtonType: TypeAlias = InlineKeyboardButton | Dict[str, Any]
 PaginationButtonsType: TypeAlias = Annotated[
     List[Optional[Annotated[str, Field(min_length=1)]]], Field(min_items=4, max_items=4)
